@@ -1,56 +1,62 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Face control</title>
-    <link rel="stylesheet" href="{% static 'DjangoWebcamStreaming/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'DjangoWebcamStreaming/css/media.css' %}">
+	<link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
+	<link href="{% static 'DjangoWebcamStreaming/css/main.css' %}" rel="stylesheet" />
+	<title>Face Recognition</title>
 </head>
 <body>
-    
-    <main class="main">
-        <h1 class="title">Face control</h1>
-        <div class="face_main">
-            <div class="face_data">
-                <table class="face_control_table table1">
-                    <tbody>
-                        <tr>
-                            <td>Name</td>
-                            <td><span id="name"></span></td>
-                        </tr>
-                        <tr>
-                            <td>Surname</td>
-                            <td><span id="surname"></span></td>
-                        </tr>
-                        <tr>
-                            <td>Birth date</td>
-                            <td><span id="birth_date"></span></td>
-                        </tr>
-                        <tr>
-                            <td>Phone</td>
-                            <td><span id="phone"></span></td>
-                        </tr>
-                        <tr>
-                            <td>Parents Phone</td>
-                            <td><span id="parents_phone"></span></td>
-                        </tr>
-                        <tr>
-                            <td>debt</td>
-                            <td><span id="debt"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="face_img">
-                <!-- <img class="faceid_img" src="{% static 'DjangoWebcamStreaming/img/face_recognition.jfif' %}" alt=""> -->
-                <img class="faceid_img" src="{% url 'video_feed' %}" alt="" style="margin-left: 50px;">
-            </div>
-        </div>
-    </main>
-    <script>
+	<div class="v1_2">
+		<div class="v3_4">
+			<div class="v13_3">
+				<div class="v13_15">
+					<span id="debt" class="v13_16">-</span>
+				</div>
+				<div class="v13_17">
+					<span id="parents_phone" class="v13_18">-</span>
+				</div>
+				<div class="v13_19">
+					<span id="phone" class="v13_20">-</span>
+				</div>
+				<div class="v58_12">
+					<span id="birth_date" class="v58_13">-</span>
+				</div>
+				<div class="v13_7">
+					<span id="surname" class="v13_8">-</span>
+				</div>
+				<div class="v13_5">
+					<span id="name" class="v13_6">-</span>
+				</div>
+			</div>
+			<div class="v13_2">
+				<div class="v3_11">
+					<span class="v3_12">Debt:</span>
+				</div>
+				<div class="v3_13">
+					<span class="v3_14">Parents Phone:</span>
+				</div>
+				<div class="v3_7">
+					<span class="v3_8">Phone:</span>
+				</div>
+				<div class="v58_10">
+					<span class="v58_11">Birth date:</span>
+				</div>
+				<div class="v3_3">
+					<span class="v3_2">Surname:</span>
+				</div><div class="v3_5">
+					<span class="v3_6">Name:</span>
+				</div>
+			</div>
+		</div>
+		<div class="v35_2">
+			<img class="v2_5" src="{% url 'video_feed' %}">
+				
+			</div>
+		</div>
+		<span class="v61_3">Admin</span>
+	</div>
+<script>
            setInterval( function check(){
             if (window.XMLHttpRequest) {
           // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -83,6 +89,5 @@
 
            } ,2000)
          </script>
-
 </body>
 </html>

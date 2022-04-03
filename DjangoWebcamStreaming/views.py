@@ -84,7 +84,7 @@ def check(request):
     # SQL request
     if current_uuid:
         #print(current_uuid)
-        try:
+        try: # need replace "undefined"
             db = Student.objects.get(uuid__exact=current_uuid)
             current_data = {
             'name': db.name,
