@@ -2,6 +2,7 @@ venv/
 tmp/
 Python38/
 wvenv/
+src/data/db.sqlite3
 __pycache__
 *.pyc
 *.bak
