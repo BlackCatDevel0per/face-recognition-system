@@ -3,7 +3,7 @@ from django.http import StreamingHttpResponse, HttpResponse, JsonResponse
 
 from django.views.decorators import gzip
 
-from main.models import Student
+from core.models import Student
 
 import time
 
