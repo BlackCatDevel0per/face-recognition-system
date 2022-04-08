@@ -44,50 +44,51 @@
 				</div>
 				<div class="v3_3">
 					<span class="v3_2">Surname:</span>
-				</div><div class="v3_5">
+				</div>
+				<div class="v3_5">
 					<span class="v3_6">Name:</span>
 				</div>
 			</div>
 		</div>
 		<div class="v35_2">
 			<img class="v2_5" src="{% url 'video_feed' %}">
-				
 			</div>
 		</div>
 		<a class="v61_3" href="http://127.0.0.1:8000/admin" target="_blank">Admin</a>
+		<a class="v87_3" href="http://127.0.0.1:8000/settings" target="_top">Settings</a>
 	</div>
-<script>
-           setInterval( function check(){
-            if (window.XMLHttpRequest) {
+	<script>
+		setInterval( function check(){
+			if (window.XMLHttpRequest) {
           // code for IE7+, Firefox, Chrome, Opera, Safari
           xmlhttp=new XMLHttpRequest();
         } else {  // code for IE6, IE5
-          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
         }
         xmlhttp.onreadystatechange=function() {
-          if (this.readyState==4 && this.status==200) {
-          let data = JSON.parse(this.responseText);
+        	if (this.readyState==4 && this.status==200) {
+        		let data = JSON.parse(this.responseText);
           // console.log(data)
-            if (data){
-              document.getElementById('name').innerHTML = data.name
-              document.getElementById('surname').innerHTML = data.surname
-              document.getElementById('birth_date').innerHTML = data.birth_date
-              document.getElementById('phone').innerHTML = data.phone
-              document.getElementById('parents_phone').innerHTML = data.parents_phone
-              document.getElementById('debt').innerHTML = data.debt
-              document.getElementById('parents_info').innerHTML = data.parents_info
-              document.getElementById('parents_status').innerHTML = data.parents_status
-              document.getElementById('discount').innerHTML = data.dicount
-              document.getElementById('uuid').innerHTML = data.uuid
-            }
-
+          if (data){
+          	document.getElementById('name').innerHTML = data.name
+          	document.getElementById('surname').innerHTML = data.surname
+          	document.getElementById('birth_date').innerHTML = data.birth_date
+          	document.getElementById('phone').innerHTML = data.phone
+          	document.getElementById('parents_phone').innerHTML = data.parents_phone
+          	document.getElementById('debt').innerHTML = data.debt
+          	document.getElementById('parents_info').innerHTML = data.parents_info
+          	document.getElementById('parents_status').innerHTML = data.parents_status
+          	document.getElementById('discount').innerHTML = data.dicount
+          	document.getElementById('uuid').innerHTML = data.uuid
           }
-        }
-        let url = "/check"
-        xmlhttp.open("GET",url,true);
-        xmlhttp.send();
 
-           } ,2000)
-         </script>
+        }
+      }
+      let url = "/check"
+      xmlhttp.open("GET",url,true);
+      xmlhttp.send();
+
+    } ,2000)
+  </script>
 </body>
 </html>
