@@ -19,6 +19,8 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
+from django.conf.urls import include
+
 from . import views
 
 
@@ -26,5 +28,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('video_feed/', views.video_feed, name="video_feed"),
     path('check/', views.check, name="check"),
+    path('grappelli/', include('grappelli.urls')), # grappelli URLS
     path('admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
