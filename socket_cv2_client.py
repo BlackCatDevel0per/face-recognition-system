@@ -2,7 +2,7 @@ import cv2
 import face_recognition
 import numpy as np
 
-from cv import *
+from cv import * #dinfo
 
 import os
 
@@ -27,7 +27,7 @@ def main():
     CDETECT = Config().get("CDETECT")[::-1]
     FRAME_RATE = Config().get("FRAME_RATE")
 
-    s_udp=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s_udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s_udp.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, BUFFSIZE)#
 
     print("*"*42)
@@ -161,10 +161,10 @@ def main():
         #3#
         #cv2.imshow('streaming',frame)
         # Encode the frame in JPEG format with changing quality
-        buffer = cv2.imencode(".jpg",frame,[int(cv2.IMWRITE_JPEG_QUALITY), VQ])[1] # lower quality
-        #buffer = cv2.imencode(".jpg",frame)[1] # default quality
+        buffer = cv2.imencode(".jpg", frame, [int(cv2.IMWRITE_JPEG_QUALITY), VQ])[1] # lower quality
+        #buffer = cv2.imencode(".jpg", frame)[1] # default quality
         x_as_bytes = pickle.dumps(buffer)
-        s_udp.sendto((x_as_bytes),(CLIENT_IP, CLIENT_PORT)) # need bytes size check or/& compress them how it can
+        s_udp.sendto((x_as_bytes), (CLIENT_IP, CLIENT_PORT)) # need bytes size check or/& compress them how it can
 
     video.release()
 

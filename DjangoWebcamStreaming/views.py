@@ -25,7 +25,7 @@ lock = None
 def gen():
     global lock
     lock = False # stoping previous loop
-    s_udp=socket.socket(socket.AF_INET , socket.SOCK_DGRAM)
+    s_udp = socket.socket(socket.AF_INET , socket.SOCK_DGRAM)
     print("Socket server restarted!")
     #print("Waiting for connections..")
     while not lock:
