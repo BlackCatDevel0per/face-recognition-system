@@ -13,6 +13,10 @@ from time import time
 import socket, pickle
 import numpy as np
 
+import django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "DjangoWebcamStreaming.settings")
+django.setup()
+
 from settings import Config
 
 def main():

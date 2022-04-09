@@ -37,3 +37,36 @@ class History(models.Model):
 
     def __str__(self):
         return f"{self.student}: {self.visit_date}"
+
+class Settings(models.Model):
+    """
+    [SOCKET]
+    BUFFSIZE = 1000000
+    CIP = 127.0.0.1
+    CPORT = 8080
+    SIP = 127.0.0.1
+    SPORT = 8080
+
+    [VIDEO]
+    CAM = http://192.168.1.103:4747/video
+    VQ = 60
+    CUNK = (255, 0, 0)
+    CDETECT = (0, 255, 0)
+    FRAME_RATE = 2
+    """
+    DEFAULT = models.BooleanField('DEFAULT', default=False)
+
+    BUFFSIZE = models.PositiveIntegerField('BUFFSIZE', default=1000000)
+    CIP = models.CharField('CIP', max_length=16, default='127.0.0.1')
+    CPORT = models.PositiveIntegerField('CPORT', default=8080)
+    SIP = models.CharField('SIP', max_length=16, default='127.0.0.1')
+    SPORT = models.PositiveIntegerField('SPORT', default=8080)
+
+    CAM = models.CharField('CAM', max_length=128, default='0')
+    VQ = models.PositiveIntegerField('VQ', default=60)
+    CUNK = models.CharField('CUNK', max_length=16, default='(255, 0, 0)')
+    CDETECT = models.CharField('CDETECT', max_length=16, default='(0, 255, 0)')
+    FRAME_RATE = models.PositiveIntegerField('FRAME_RATE', default=2)
+
+    def __str__(self):
+        return f"For cam: {self.CAM}"

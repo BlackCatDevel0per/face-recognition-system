@@ -3,7 +3,7 @@ from django.http import StreamingHttpResponse, HttpResponse, JsonResponse
 
 from django.views.decorators import gzip
 
-from core.models import Student
+from core.models import Student, History
 
 import time
 
@@ -14,6 +14,7 @@ import os
 
 import sqlite3
 
+print("Loading settings..")
 from settings import Config
 SERVER_IP = Config().get("CIP")
 SERVER_PORT = Config().get("CPORT")
@@ -100,6 +101,11 @@ def check(request):
             #'image': db.image,
             'uuid': db.uuid,
             }
+
+            #history = History.objects.get(uuid__exact=current_uuid)
+
+            #print(history.visit_date)
+
         except Student.DoesNotExist as ed:
             print("DB err", ed)
         except Exception as e:
