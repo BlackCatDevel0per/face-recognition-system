@@ -56,6 +56,17 @@ class Settings(models.Model):
     """
     DEFAULT = models.BooleanField('DEFAULT', default=False)
 
+    def save(self, *args, **kwargs): # Unique default
+        if self.DEFAULT:
+            try:
+                temp = Settings.objects.get(DEFAULT=True)
+                if self != temp:
+                    temp.DEFAULT = False
+                    temp.save()
+            except Settings.DoesNotExist:
+                pass
+        super(Settings, self).save(*args, **kwargs)
+
     BUFFSIZE = models.PositiveIntegerField('BUFFSIZE', default=1000000)
     CIP = models.CharField('CIP', max_length=16, default='127.0.0.1')
     CPORT = models.PositiveIntegerField('CPORT', default=8080)
@@ -69,4 +80,4 @@ class Settings(models.Model):
     FRAME_RATE = models.PositiveIntegerField('FRAME_RATE', default=2)
 
     def __str__(self):
-        return f"For cam: {self.CAM}"
+        return f"For cam: {self.CAM} | Use: {self.DEFAULT}"

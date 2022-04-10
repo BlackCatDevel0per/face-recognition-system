@@ -10,24 +10,26 @@ class Config:
         self.data = True
         try:
             self.stngs = Settings.objects.get(DEFAULT=True)
-        
+
         except OperationalError:
             print("Settings table does not exist!!!")
             self.data = None
         
         except Settings.DoesNotExist:
-            print("Not DEFAULT Settings")
+            print("No DEFAULT Settings")
             self.data = None
-        except Exception:
-            print(Exception)
+
+        # except TypeError:
+        #     print("TypeError: Please check settings")
+        #     SERVER_IP = None
+        #     SERVER_PORT = None
+        #     BUFFSIZE = None
+
+        except Exception as e:
+            print(e)
             self.data = None
-        """
-        except TypeError:
-            print("TypeError: Please check settings")
-            SERVER_IP = None
-            SERVER_PORT = None
-            BUFFSIZE = None
-        """
+        
+        
 
     def get(self, args: str):
 
