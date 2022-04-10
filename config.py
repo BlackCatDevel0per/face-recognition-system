@@ -30,7 +30,6 @@ class Config:
             self.data = None
         
         
-
     def get(self, args: str):
 
         if self.data: 
@@ -43,12 +42,15 @@ class Config:
 
             CAM = self.stngs.CAM
             VQ = self.stngs.VQ
-            CUNK = self.stngs.CUNK
-            CDETECT = self.stngs.CDETECT
+            
+            CUNK = eval(self.stngs.CUNK)
+            CDETECT = eval(self.stngs.CDETECT)
+            
             FRAME_RATE = self.stngs.FRAME_RATE
+
+            WHISTORY_TIME_RANGE = eval(self.stngs.WHISTORY_TIME_RANGE)
 
             self.data = eval(args)
             #print(data)
 
         return self.data
-

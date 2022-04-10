@@ -32,7 +32,7 @@ class Student(models.Model):
 
 
 class History(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE) # student uuid
     visit_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -78,6 +78,8 @@ class Settings(models.Model):
     CUNK = models.CharField('CUNK', max_length=16, default='(255, 0, 0)')
     CDETECT = models.CharField('CDETECT', max_length=16, default='(0, 255, 0)')
     FRAME_RATE = models.PositiveIntegerField('FRAME_RATE', default=2)
+
+    WHISTORY_TIME_RANGE = models.CharField('WHISTORY_TIME_RANGE', max_length=64, default="{'hours': 1, 'minutes': 0}")
 
     def __str__(self):
         return f"For cam: {self.CAM} | Use: {self.DEFAULT}"

@@ -8,7 +8,9 @@ import os
 
 import sqlite3
 
+import pytz
 from time import time
+from datetime import datetime, timedelta
 
 import socket, pickle
 import numpy as np
@@ -17,7 +19,9 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "DjangoWebcamStreaming.settings")
 django.setup()
 
-from settings import Config
+from config import Config
+
+from core.models import History
 
 def main():
     # Socket Server
@@ -30,6 +34,9 @@ def main():
     CUNK = Config().get("CUNK")[::-1]
     CDETECT = Config().get("CDETECT")[::-1]
     FRAME_RATE = Config().get("FRAME_RATE")
+
+    WHISTORY_TIME_RANGE = Config().get("WHISTORY_TIME_RANGE")
+    WHOURS, WMINUTES = WHISTORY_TIME_RANGE.get('hours'), WHISTORY_TIME_RANGE.get('minutes')
 
     s_udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s_udp.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, BUFFSIZE)#
@@ -146,13 +153,40 @@ def main():
                     # socket tcp request
                     #print(cuuid)
                     ###
-                    conn = sqlite3.connect(os.path.join('src', 'data', 'tmp.db'))
-                    cur = conn.cursor()
+                    with sqlite3.connect(os.path.join('src', 'data', 'tmp.db')) as conn:
+                        cur = conn.cursor()
 
-                    cur.execute("""UPDATE tmp SET UUID = ? WHERE id = 1;
-                                """, (cuuid,))
-                    conn.commit()
-                    conn.close()
+                        cur.execute("""UPDATE tmp SET UUID = ? WHERE id = 1;
+                                    """, (cuuid,))
+                        conn.commit()
+                        #conn.close()
+                        #print('DETECT')
+
+                    visit_dates = History.objects.all().filter(student_id=current_uuid).values_list('visit_date', flat=True)
+
+                    if visit_dates:
+                        nearest = lambda lst, target: min(lst, key=lambda x: abs(x-target))
+                        last_visit_date = nearest(visit_dates, datetime.now().replace(tzinfo=pytz.UTC))
+
+                    else:
+                        last_visit_date = None
+                    
+                    print(last_visit_date)
+
+                    # print(last_visit_date) # <class 'datetime.datetime'>
+                    # print(type(last_visit_date))
+
+                    if last_visit_date:
+                        if last_visit_date.replace(tzinfo=None) + timedelta(hours=WHOURS, minutes=WMINUTES) <= datetime.now(): # tzinfo=<UTC>
+                            # Add visit date to history
+                            History.objects.create(student_id=current_uuid, visit_date=datetime.now())
+                            print("Bye! See you next time!")
+                        else:
+                            print("Hi! I saw you recently!")
+                    
+                    else:
+                        History.objects.create(student_id=current_uuid, visit_date=datetime.now())
+                        print("Hi! I see you for the first time!")
 
                     ###
 
