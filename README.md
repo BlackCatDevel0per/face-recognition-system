@@ -36,6 +36,7 @@ python run.py
 - [ ] Run in PyPy (opencv)
 - [X] Socket streaming
 Other things..
+- [ ] Rewrite socket to REST API
 
 # Used Code
 https://github.com/ageitgey/face_recognition/
