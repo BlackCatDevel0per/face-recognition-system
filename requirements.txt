@@ -12,6 +12,7 @@ imutils==0.5.4
 numpy==1.22.3
 opencv-python==4.5.5.64
 Pillow==9.1.0
+pytz==2022.1
 sqlparse==0.4.2
 typing-extensions==4.1.1
 tzdata==2022.1
