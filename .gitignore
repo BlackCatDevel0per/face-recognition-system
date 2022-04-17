@@ -1,6 +1,6 @@
 venv/
 tmp/
-Python38/
+WPy64-38100/
 wvenv/
 __pycache__
 *.pyc

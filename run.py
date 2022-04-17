@@ -1,4 +1,5 @@
 import os
+import sys
 import shlex
 import subprocess
 
@@ -33,12 +34,8 @@ for p in ldir:
    else:
       print("Bad filename: ", p)
 
-if os.name == 'posix':
-   cv_client = subprocess.Popen(shlex.split("python3 socket_cv2_client.py"))
-   django_server = subprocess.Popen(shlex.split("python3 manage.py runserver"))
-elif os.name == 'nt':
-   cv_client = subprocess.Popen(shlex.split("python socket_cv2_client.py"))
-   django_server = subprocess.Popen(shlex.split("python manage.py runserver"))
+cv_client = subprocess.Popen([sys.executable, "socket_cv2_client.py"])
+django_server = subprocess.Popen([sys.executable, "manage.py", "runserver"])
 
 try:
     cv_client.wait()
@@ -51,6 +48,8 @@ except KeyboardInterrupt:
        pass
     cv_client.wait()
     django_server.wait()
+except Exception as e:
+   print(e)
 
 
 
