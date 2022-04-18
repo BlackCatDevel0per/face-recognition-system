@@ -3,5 +3,9 @@ tmp/
 WPy64-38100/
 wvenv/
 __pycache__
+build/
+dist/
+*.spec
+*.exe
 *.pyc
 *.bak

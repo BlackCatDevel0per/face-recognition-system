@@ -5,7 +5,7 @@
 #define MyAppVersion "1.0"
 #define MyAppPublisher "BlackCatDevel0per"
 #define MyAppURL "https://github.com/BlackCatDevel0per/face-recognition-system"
-#define MyAppExeName "run.bat"
+#define MyAppExeName "FSR.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.

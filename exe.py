@@ -1,34 +1,41 @@
 import os
+import sys
 import time
 import shlex
 import psutil
+import tempfile
 import subprocess
 
 import pystray
 
 from PIL import Image, ImageDraw, UnidentifiedImageError
 
+# pyinstaller --icon=staticfiles\DjangoWebcamStreaming\images\favicon.ico --onefile --windowed exe.py
 
-
-lockfile = 'app.lock'
+lockfile = os.path.join(tempfile.gettempdir(), 'FSR_TRAY.lock')
+logfile = open(os.path.join(tempfile.gettempdir(), 'FSR.log'), 'w')
 def run_check():
     txt = None
     if not os.path.exists(lockfile):
         with open(lockfile, 'w') as lf:
             lf.write(str(os.getpid()))
+            return True #
     with open(lockfile, 'r+') as lf:
         txt = lf.read()
         if not txt:
+            print("W: lockfile is empty!")
             lf.write(str(os.getpid()))
+            return True #
 
     try:
         pid = int(txt)
     except ValueError:
         os.remove(lockfile)
-        exit(1)
+        sys.exit(1)
     if psutil.pid_exists(pid):
         print("Programm already running:", pid, 'current:', os.getpid())
-        exit(1)
+        raise OSError("Programm already running!")
+        sys.exit(0)
     else:
         with open(lockfile, 'w') as lf:
             lf.write(str(os.getpid()))        
@@ -72,7 +79,7 @@ def startup_actions():
            else:
               print("Bad filename: ", p)
     except Exception as e:
-        print(eyy)
+        print(e)
 
 from pystray import Icon as icon, Menu as menu, MenuItem as item
 
@@ -111,8 +118,8 @@ def on_clicked(icon, item):
     global pool
     if not pool:
         startup_actions()
-        cv_client = subprocess.Popen(["""WPy64-38100\python-3.8.10.amd64\python.exe""", "socket_cv2_client.py"])
-        django_server = subprocess.Popen(["""WPy64-38100\python-3.8.10.amd64\python.exe""", "manage.py", "runserver"])
+        cv_client = subprocess.Popen(["""WPy64-38100\python-3.8.10.amd64\python.exe""", "socket_cv2_client.py"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
+        django_server = subprocess.Popen(["""WPy64-38100\python-3.8.10.amd64\python.exe""", "manage.py", "runserver"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
         print("Process started!")
         pool = True
     else:
@@ -133,8 +140,8 @@ def on_stop(icon, item):
         except psutil.NoSuchProcess:
             pass
         """
-        subprocess.Popen(shlex.split("taskkill /F /T /PID %d" % cv_client.pid)) # psutil
-        subprocess.Popen(shlex.split("taskkill /F /T /PID %d" % django_server.pid)) # psutil
+        subprocess.Popen(shlex.split("taskkill /F /T /PID %d" % cv_client.pid), stdin=logfile, stdout=logfile, stderr=logfile, shell=True) # psutil
+        subprocess.Popen(shlex.split("taskkill /F /T /PID %d" % django_server.pid), stdin=logfile, stdout=logfile, stderr=logfile, shell=True) # psutil
         print("Process killed!")
         pool = False
     else:
