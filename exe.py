@@ -118,8 +118,12 @@ def on_clicked(icon, item):
     global pool
     if not pool:
         startup_actions()
-        cv_client = subprocess.Popen(["""WPy64-38100\python-3.8.10.amd64\python.exe""", "socket_cv2_client.py"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
-        django_server = subprocess.Popen(["""WPy64-38100\python-3.8.10.amd64\python.exe""", "manage.py", "runserver"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
+        if os.name == 'nt':
+            cv_client = subprocess.Popen(["""venv/bin/python3""", "socket_cv2_client.py"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
+            django_server = subprocess.Popen(["""venv/bin/python""", "manage.py", "runserver"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
+        elif os.name == 'posix':
+            cv_client = subprocess.Popen(["""WPy64-38100\python-3.8.10.amd64\python.exe""", "socket_cv2_client.py"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
+            django_server = subprocess.Popen(["""WPy64-38100\python-3.8.10.amd64\python.exe""", "manage.py", "runserver"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
         print("Process started!")
         pool = True
     else:
@@ -140,8 +144,13 @@ def on_stop(icon, item):
         except psutil.NoSuchProcess:
             pass
         """
-        subprocess.Popen(shlex.split("taskkill /F /T /PID %d" % cv_client.pid), stdin=logfile, stdout=logfile, stderr=logfile, shell=True) # psutil
-        subprocess.Popen(shlex.split("taskkill /F /T /PID %d" % django_server.pid), stdin=logfile, stdout=logfile, stderr=logfile, shell=True) # psutil
+        if os.name == 'nt':
+            subprocess.Popen(shlex.split("taskkill /F /T /PID %d" % cv_client.pid), stdin=logfile, stdout=logfile, stderr=logfile, shell=True) # psutil
+            subprocess.Popen(shlex.split("taskkill /F /T /PID %d" % django_server.pid), stdin=logfile, stdout=logfile, stderr=logfile, shell=True) # psutil
+        elif os.name == 'posix':
+            cv_client.kill()
+            django_server.kill()
+
         print("Process killed!")
         pool = False
     else:
@@ -163,7 +172,7 @@ ic = icon(NAME, ICON, menu=menu(
         on_exit)))
 
 
-if os.name == 'nt':
+if __name__ == '__main__':
     run_check()
     ic.run()
     os.remove(lockfile)
