@@ -33,7 +33,7 @@ def main():
     VQ = Config().get("VQ")
     CUNK = Config().get("CUNK")[::-1]
     CDETECT = Config().get("CDETECT")[::-1]
-    FRAME_RATE = Config().get("FRAME_RATE")
+    RECOGNIZE_FRAME_RATE = Config().get("RECOGNIZE_FRAME_RATE")
 
     WHISTORY_TIME_RANGE = Config().get("WHISTORY_TIME_RANGE")
     WHOURS, WMINUTES = WHISTORY_TIME_RANGE.get('hours'), WHISTORY_TIME_RANGE.get('minutes')
@@ -113,7 +113,7 @@ def main():
         rgb_small_frame = small_frame[:, :, ::-1]
 
 
-        if time_elapsed > 1./FRAME_RATE: # don't use continue
+        if time_elapsed > 1./RECOGNIZE_FRAME_RATE: # don't use continue
             prev = time()
 
             # Find all the faces and face encodings in the current frame of video

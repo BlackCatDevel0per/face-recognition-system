@@ -46,7 +46,7 @@ class Config:
             CUNK = eval(self.stngs.CUNK)
             CDETECT = eval(self.stngs.CDETECT)
             
-            FRAME_RATE = self.stngs.FRAME_RATE
+            RECOGNIZE_FRAME_RATE = self.stngs.RECOGNIZE_FRAME_RATE
 
             WHISTORY_TIME_RANGE = eval(self.stngs.WHISTORY_TIME_RANGE)
 

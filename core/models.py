@@ -13,17 +13,17 @@ def make_image(instanse, filename):
 
 
 class Student(models.Model):
-    name = models.CharField('Ismi', max_length=25)
-    surname = models.CharField('Familyasi', max_length=25)
-    birth_date = models.DateField('Tugulgan kuni', blank=True, null=True)
-    address = models.CharField('Manzili', max_length=355)
-    phone = models.CharField('Telefoni', max_length=16, blank=True)
-    parents_phone = models.CharField('Qarindoshining telefoni', max_length=16, blank=True)
-    parents_info = models.CharField('Ismi ', max_length=16, blank=True)
-    parents_status = models.CharField('Qarindoshligi', max_length=16, blank=True)
+    name = models.CharField('Name', max_length=25)
+    surname = models.CharField('Surname', max_length=25)
+    birth_date = models.DateField('Birth date', blank=True, null=True)
+    address = models.CharField('Address', max_length=355)
+    phone = models.CharField('Phone', max_length=16, blank=True)
+    parents_phone = models.CharField('Parents phone', max_length=16, blank=True)
+    parents_info = models.CharField('Parents info', max_length=16, blank=True)
+    parents_status = models.CharField('Parents status', max_length=16, blank=True)
     #uuid = models.UUIDField(max_length=150, blank=True,null=True)
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    discount = models.PositiveIntegerField("Chegirma", default=0)
+    discount = models.PositiveIntegerField("Discount", default=0)
     debt = models.PositiveIntegerField(default=0)
     image = models.ImageField(upload_to=make_image) # image not deleting!!!
 
@@ -52,7 +52,7 @@ class Settings(models.Model):
     VQ = 60
     CUNK = (255, 0, 0)
     CDETECT = (0, 255, 0)
-    FRAME_RATE = 2
+    RECOGNIZE_FRAME_RATE = 2
     """
     DEFAULT = models.BooleanField('DEFAULT', default=False)
 
@@ -77,7 +77,7 @@ class Settings(models.Model):
     VQ = models.PositiveIntegerField('VQ', default=60)
     CUNK = models.CharField('CUNK', max_length=16, default='(255, 0, 0)')
     CDETECT = models.CharField('CDETECT', max_length=16, default='(0, 255, 0)')
-    FRAME_RATE = models.PositiveIntegerField('FRAME_RATE', default=2)
+    RECOGNIZE_FRAME_RATE = models.PositiveIntegerField('RECOGNIZE_FRAME_RATE', default=2)
 
     WHISTORY_TIME_RANGE = models.CharField('WHISTORY_TIME_RANGE', max_length=64, default="{'hours': 1, 'minutes': 0}")
 
