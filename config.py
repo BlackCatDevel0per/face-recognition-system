@@ -43,12 +43,12 @@ class Config:
             CAM = self.stngs.CAM
             VQ = self.stngs.VQ
             
-            CUNK = eval(self.stngs.CUNK)
-            CDETECT = eval(self.stngs.CDETECT)
+            CUNK = tuple(eval(self.stngs.CUNK))
+            CDETECT = tuple(eval(self.stngs.CDETECT))
             
-            RECOGNIZE_FRAME_RATE = self.stngs.RECOGNIZE_FRAME_RATE
+            RECOGNIZE_FRAME_RATE = int(self.stngs.RECOGNIZE_FRAME_RATE)
 
-            WHISTORY_TIME_RANGE = eval(self.stngs.WHISTORY_TIME_RANGE)
+            WHISTORY_TIME_RANGE = dict(eval(self.stngs.WHISTORY_TIME_RANGE))
 
             self.data = eval(args)
             #print(data)
