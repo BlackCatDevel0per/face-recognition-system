@@ -5,6 +5,7 @@ wvenv/
 __pycache__
 build/
 dist/
+*.sqlite3-journal
 *.spec
 *.exe
 *.pyc
