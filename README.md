@@ -33,9 +33,9 @@ python run.py
 Default user and password: admin, texnopark
 
 # Planing add
-- [ ] PostgreSQL
-- [ ] web interface
 - [ ] Update system, distributing and etc.
+- [ ] web interface
+- [ ] PostgreSQL
 - [ ] Logging
 - [ ] Run in PyPy (opencv)
 - [X] Socket streaming
