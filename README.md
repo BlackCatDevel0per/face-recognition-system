@@ -39,8 +39,8 @@ Default user and password: admin, texnopark
 - [ ] Logging
 - [ ] Run in PyPy (opencv)
 - [X] Socket streaming
+- [ ] Rewrite socket to other.. (For multiuser support)
 Other things..
-- [ ] Rewrite socket to other..
 
 # Used Code
 https://github.com/ageitgey/face_recognition/
