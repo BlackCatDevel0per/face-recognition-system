@@ -6,7 +6,7 @@ Simple face recognition system
 ```
 pip install face-recognition==1.3.0 face-recognition-models==0.3.0 --no-deps
 pip install -r requirements.txt
-# Or simple run:
+# Or simple run (for windows):
 pip install -r requirements1.txt
 ```
 
