@@ -6,6 +6,8 @@ import psutil
 import tempfile
 import subprocess
 
+import webbrowser
+
 import pystray
 
 from PIL import Image, ImageDraw, UnidentifiedImageError
@@ -43,6 +45,7 @@ def run_check():
 ICON_PATH = os.path.join(os.getcwd(), "staticfiles", "DjangoWebcamStreaming", "images", "favicon.ico")
 NAME = "FRS"
 ACT_RUN = "RUN"
+ACT_RESTART = "RESTART"
 ACT_STOP = "STOP"
 ACT_EXIT = "EXIT"
 
@@ -78,6 +81,8 @@ def startup_actions():
               break
            else:
               print("Bad filename: ", p)
+
+        webbrowser.open('http://localhost:8000', new=0, autoraise=True)
     except Exception as e:
         print(e)
 
@@ -117,7 +122,7 @@ def on_clicked(icon, item):
     global django_server
     global pool
     if not pool:
-        startup_actions()
+        #startup_actions()
         if os.name == 'nt':
             cv_client = subprocess.Popen(["""WPy64-38100\python-3.8.10.amd64\python.exe""", "socket_cv2_client.py"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
             django_server = subprocess.Popen(["""WPy64-38100\python-3.8.10.amd64\python.exe""", "manage.py", "runserver"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
@@ -156,6 +161,11 @@ def on_stop(icon, item):
     else:
         print("Process is not running!")
 
+def on_restart(icon, item):
+    on_stop()
+    time.sleep(1)
+    on_clicked()
+
 def on_exit(icon, item):
     on_stop(icon, item)
     icon.stop()
@@ -163,6 +173,9 @@ def on_exit(icon, item):
 ic = icon(NAME, ICON, menu=menu(
     item(
         ACT_RUN,
+        on_clicked),
+    item(
+        ACT_RESTART,
         on_clicked),
     item(
         ACT_STOP,
@@ -174,5 +187,6 @@ ic = icon(NAME, ICON, menu=menu(
 
 if __name__ == '__main__':
     run_check()
+    startup_actions()
     ic.run()
     os.remove(lockfile)
