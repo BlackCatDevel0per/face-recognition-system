@@ -162,9 +162,9 @@ def on_stop(icon, item):
         print("Process is not running!")
 
 def on_restart(icon, item):
-    on_stop()
+    on_stop(icon, item)
     time.sleep(1)
-    on_clicked()
+    on_clicked(icon, item)
 
 def on_exit(icon, item):
     on_stop(icon, item)
@@ -176,7 +176,7 @@ ic = icon(NAME, ICON, menu=menu(
         on_clicked),
     item(
         ACT_RESTART,
-        on_clicked),
+        on_restart),
     item(
         ACT_STOP,
         on_stop),
