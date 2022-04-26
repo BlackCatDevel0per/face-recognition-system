@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="{% static 'DjangoWebcamStreaming/styles/Iter.css' %}" rel="stylesheet" />
+	<link href="{% static 'DjangoWebcamStreaming/css/main.css' %}" rel="stylesheet" />
+	<title>Face Recognition</title>
+	<link rel="shortcut icon" type="image/ico" href="{% static 'DjangoWebcamStreaming/images/favicon.ico' %}">
+</head>
+<body>
+	<div class="v1_2">
+		<div class="v3_4">
+			<div class="v13_3">
+				<div class="v13_15">
+					<span id="debt" class="v13_16">-</span>
+				</div>
+				<div class="v13_17">
+					<span id="parents_phone" class="v13_18">-</span>
+				</div>
+				<div class="v13_19">
+					<span id="phone" class="v13_20">-</span>
+				</div>
+				<div class="v58_12">
+					<span id="birth_date" class="v58_13">-</span>
+				</div>
+				<div class="v13_7">
+					<span id="surname" class="v13_8">-</span>
+				</div>
+				<div class="v13_5">
+					<span id="name" class="v13_6">-</span>
+				</div>
+			</div>
+			<div class="v13_2">
+				<div class="v3_11">
+					<span class="v3_12">Debt:</span>
+				</div>
+				<div class="v3_13">
+					<span class="v3_14">Parents Phone:</span>
+				</div>
+				<div class="v3_7">
+					<span class="v3_8">Phone:</span>
+				</div>
+				<div class="v58_10">
+					<span class="v58_11">Birth date:</span>
+				</div>
+				<div class="v3_3">
+					<span class="v3_2">Surname:</span>
+				</div>
+				<div class="v3_5">
+					<span class="v3_6">Name:</span>
+				</div>
+			</div>
+		</div>
+		<div class="v35_2">
+			<img class="v2_5" src="{% url 'video_feed' %}">
+			</div>
+		</div>
+		<a class="v61_3" href="http://127.0.0.1:8000/admin" target="_blank">Admin</a>
+	</div>
+	<script>
+		setInterval( function check(){
+			if (window.XMLHttpRequest) {
+          // code for IE7+, Firefox, Chrome, Opera, Safari
+          xmlhttp=new XMLHttpRequest();
+        } else {  // code for IE6, IE5
+        	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange=function() {
+        	if (this.readyState==4 && this.status==200) {
+        		let data = JSON.parse(this.responseText);
+          // console.log(data)
+          if (data){
+          	document.getElementById('name').innerHTML = data.name
+          	document.getElementById('surname').innerHTML = data.surname
+          	document.getElementById('birth_date').innerHTML = data.birth_date
+          	document.getElementById('phone').innerHTML = data.phone
+          	document.getElementById('parents_phone').innerHTML = data.parents_phone
+          	document.getElementById('debt').innerHTML = data.debt
+          	document.getElementById('parents_info').innerHTML = data.parents_info
+          	document.getElementById('parents_status').innerHTML = data.parents_status
+          	document.getElementById('discount').innerHTML = data.dicount
+          	document.getElementById('uuid').innerHTML = data.uuid
+          }
+
+        }
+      }
+      let url = "/check"
+      xmlhttp.open("GET",url,true);
+      xmlhttp.send();
+
+    } ,2000)
+  </script>
+</body>
+</html>
