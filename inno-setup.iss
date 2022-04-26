@@ -2,10 +2,10 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Face Recognition System"
-#define MyAppVersion "1.0"
+#define MyAppVersion "1.0.1
 #define MyAppPublisher "BlackCatDevel0per"
 #define MyAppURL "https://github.com/BlackCatDevel0per/face-recognition-system"
-#define MyAppExeName "FSR.exe"
+#define MyAppExeName "FRS.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
