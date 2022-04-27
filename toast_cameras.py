@@ -17,5 +17,5 @@ def CameraIndexes() -> list:
 	return arr
 
 if __name__ == '__main__':
-	alert(CameraIndexes(), title="CAM List")
 	print(CameraIndexes())
+	alert(CameraIndexes(), title="CAM List")

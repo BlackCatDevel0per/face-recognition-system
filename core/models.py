@@ -1,6 +1,14 @@
-#import os
+import os
 import uuid
 from django.db import models
+
+from DjangoWebcamStreaming.settings import BASE_DIR
+
+toast_cam_script_path = 'UNKNOWN'
+if os.name == 'nt':
+    toast_cam_script_path = os.path.join(BASE_DIR, 'toast_cameras.bat')
+elif os.name == 'posix':
+    toast_cam_script_path = os.path.join(BASE_DIR, 'toast_cameras.py')
 
 # Create your models here.
 
@@ -25,7 +33,7 @@ class Student(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     discount = models.PositiveIntegerField("Discount", default=0)
     debt = models.PositiveIntegerField(default=0)
-    image = models.ImageField(upload_to=make_image) # image not deleting!!!
+    image = models.ImageField(upload_to=make_image)
 
     def __str__(self):
         return f"{self.name} {self.surname}"
@@ -67,19 +75,20 @@ class Settings(models.Model):
                 pass
         super(Settings, self).save(*args, **kwargs)
 
-    BUFFSIZE = models.PositiveIntegerField('BUFFSIZE', default=1000000)
-    CIP = models.CharField('CIP', max_length=16, default='127.0.0.1')
-    CPORT = models.PositiveIntegerField('CPORT', default=8080)
-    SIP = models.CharField('SIP', max_length=16, default='127.0.0.1')
-    SPORT = models.PositiveIntegerField('SPORT', default=8080)
+    BUFFSIZE = models.PositiveIntegerField('BUFFSIZE', help_text='Buffer size for socket', default=1000000)
+    CIP = models.CharField('CIP', max_length=16, help_text='Client IP (Browser)', default='127.0.0.1')
+    CPORT = models.PositiveIntegerField('CPORT', help_text='Client PORT (Browser)', default=8080)
+    SIP = models.CharField('SIP', max_length=16, help_text='Server IP (Face Recognition)', default='127.0.0.1')
+    SPORT = models.PositiveIntegerField('SPORT', help_text='Server PORT (Face Recognition)', default=8080)
 
-    CAM = models.CharField('CAM', max_length=128, default='0')
-    VQ = models.PositiveIntegerField('VQ', default=60)
-    CUNK = models.CharField('CUNK', max_length=16, default='(255, 0, 0)')
-    CDETECT = models.CharField('CDETECT', max_length=16, default='(0, 255, 0)')
-    RECOGNIZE_FRAME_RATE = models.PositiveIntegerField('RECOGNIZE_FRAME_RATE', default=2)
+    CAM = models.CharField('CAM', max_length=128, help_text=f'Server Camera IP (Face Recognition)\nCan use system camera by index (run to get cam index: {toast_cam_script_path} )', default='0')
 
-    WHISTORY_TIME_RANGE = models.CharField('WHISTORY_TIME_RANGE', max_length=64, default="{'hours': 1, 'minutes': 0}")
+    VQ = models.PositiveIntegerField('VQ', help_text='Video Quality in %', default=60)
+    CUNK = models.CharField('CUNK', max_length=16, help_text='Color for frame if unknown people detected', default='(255, 0, 0)')
+    CDETECT = models.CharField('CDETECT', max_length=16, help_text='Colour for frame if known people detected', default='(0, 255, 0)')
+    RECOGNIZE_FRAME_RATE = models.PositiveIntegerField('RECOGNIZE_FRAME_RATE', help_text='Recognize frames count per second', default=2)
 
+    WHISTORY_TIME_RANGE = models.CharField('WHISTORY_TIME_RANGE', help_text='Write History Time Range', max_length=64, default="{'hours': 1, 'minutes': 0}")
+    
     def __str__(self):
-        return f"For cam: {self.CAM} | Use: {self.DEFAULT}"
+        return f"CAM: {self.CAM} | USE: {self.DEFAULT}"

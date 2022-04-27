@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Face Recognition System"
-#define MyAppVersion "1.0.1
+#define MyAppVersion "1.0.2
 #define MyAppPublisher "BlackCatDevel0per"
 #define MyAppURL "https://github.com/BlackCatDevel0per/face-recognition-system"
 #define MyAppExeName "FRS.exe"

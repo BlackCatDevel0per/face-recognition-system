@@ -82,7 +82,6 @@ def startup_actions():
            else:
               print("Bad filename: ", p)
 
-        webbrowser.open('http://localhost:8000', new=0, autoraise=True)
     except Exception as e:
         print(e)
 
@@ -117,12 +116,12 @@ global django_server
 global pool
 pool = False
 
-def on_clicked(icon, item):
+def on_run(icon, item):
     global cv_client
     global django_server
     global pool
     if not pool:
-        #startup_actions()
+        startup_actions()
         if os.name == 'nt':
             cv_client = subprocess.Popen(["""WPy64-38100\python-3.8.10.amd64\python.exe""", "socket_cv2_client.py"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
             django_server = subprocess.Popen(["""WPy64-38100\python-3.8.10.amd64\python.exe""", "manage.py", "runserver"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
@@ -131,6 +130,8 @@ def on_clicked(icon, item):
             django_server = subprocess.Popen(["""venv/bin/python""", "manage.py", "runserver"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
         print("Process started!")
         pool = True
+        time.sleep(3)
+        webbrowser.open('http://localhost:8000', new=0, autoraise=True)
     else:
         print("Process already running!!!")
 
@@ -164,7 +165,7 @@ def on_stop(icon, item):
 def on_restart(icon, item):
     on_stop(icon, item)
     time.sleep(1)
-    on_clicked(icon, item)
+    on_run(icon, item)
 
 def on_exit(icon, item):
     on_stop(icon, item)
@@ -173,7 +174,7 @@ def on_exit(icon, item):
 ic = icon(NAME, ICON, menu=menu(
     item(
         ACT_RUN,
-        on_clicked),
+        on_run),
     item(
         ACT_RESTART,
         on_restart),
@@ -187,6 +188,6 @@ ic = icon(NAME, ICON, menu=menu(
 
 if __name__ == '__main__':
     run_check()
-    startup_actions()
+    #startup_actions()
     ic.run()
     os.remove(lockfile)
