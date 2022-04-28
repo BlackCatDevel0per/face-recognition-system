@@ -23,7 +23,6 @@ class Config:
         #     print("TypeError: Please check settings")
         #     SERVER_IP = None
         #     SERVER_PORT = None
-        #     BUFFSIZE = None
 
         except Exception as e:
             print(e)
@@ -33,11 +32,8 @@ class Config:
     def get(self, args: str):
 
         if self.data: 
-            CIP = self.stngs.CIP
             SPORT = self.stngs.SPORT
-            BUFFSIZE = self.stngs.BUFFSIZE
 
-            CPORT = self.stngs.CPORT
             SIP = self.stngs.SIP
 
             CAM = self.stngs.CAM

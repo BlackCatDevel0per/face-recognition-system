@@ -34,12 +34,12 @@ Default user and password: admin, texnopark
 
 # Planing add
 - [ ] Update system, distributing and etc.
-- [ ] web interface
+- [ ] web interface rewrite (last updated 28.04.2022)
 - [ ] PostgreSQL
 - [ ] Logging
 - [ ] Run in PyPy (opencv)
 - [X] Socket streaming
-- [ ] Rewrite socket to other.. (For multiuser support)
+- [X] Rewrite socket to other.. (For multiuser support) - ZMQ
 Other things..
 
 # Used Code

@@ -1,12 +1,15 @@
+<<<<<<< HEAD
+=======
 asgiref==3.5.0
+>>>>>>> a6f376fd80b5be18957a3da4a7ca25051710dc68
 asyncio==3.4.3
 backports.zoneinfo==0.2.1
-colorama==0.4.4
 configparser==5.2.0
 Django==4.0.3
 django-cleanup==6.0.0
 django-grappelli==3.0.3
 dlib-binary==19.21.99
+imagezmq=1.1.1
 imutils==0.5.4
 numpy==1.22.3
 opencv-python==4.5.5.64

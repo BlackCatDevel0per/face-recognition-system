@@ -6,13 +6,15 @@ from cv import * #dinfo
 
 import os
 
-import sqlite3
-
 import pytz
 from time import time
+from time import sleep
 from datetime import datetime, timedelta
 
-import socket, pickle
+import socket
+from imutils.video import VideoStream
+import imagezmq
+
 import numpy as np
 
 import django
@@ -23,13 +25,13 @@ from config import Config
 
 from core.models import History
 
+
 def main():
     # Socket Server
 
     CAM = Config().get("CAM")
-    CLIENT_IP = Config().get("SIP")
-    CLIENT_PORT = Config().get("SPORT")
-    BUFFSIZE = Config().get("BUFFSIZE")
+    SERVER_IP = socket.gethostbyname(socket.gethostname())
+    SERVER_PORT = Config().get("SPORT")
     VQ = Config().get("VQ")
     CUNK = Config().get("CUNK")[::-1]
     CDETECT = Config().get("CDETECT")[::-1]
@@ -38,15 +40,17 @@ def main():
     WHISTORY_TIME_RANGE = Config().get("WHISTORY_TIME_RANGE")
     WHOURS, WMINUTES = WHISTORY_TIME_RANGE.get('hours'), WHISTORY_TIME_RANGE.get('minutes')
 
-    s_udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s_udp.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, BUFFSIZE)#
+    sender = imagezmq.ImageSender(f"tcp://*:{SERVER_PORT}", REQ_REP=False)
 
     print("*"*42)
-    print(f"Server running at: http://{CLIENT_IP}:{CLIENT_PORT}")
+    print(f"Server running at: http://{SERVER_IP}:{SERVER_PORT}")
     print("*"*42)
 
     #video = cv2.VideoCapture(0)
-    video = cv2.VideoCapture(CAM) # my ip cam
+    video = VideoStream(CAM) # my ip cam
+    video.start()
+    sleep(2.0)
+    print("Input stream opened!")
     ldir = os.listdir(os.path.join("src", "images"))
 
     if not ldir:
@@ -101,10 +105,7 @@ def main():
 
         # Grab a single frame of video
         time_elapsed = time() - prev
-        success, frame = video.read()
-
-        #if not success:
-        #        return False
+        frame = video.read()
 
         # Resize frame of video to 1/4 size for faster face recognition processing
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)###
@@ -150,17 +151,7 @@ def main():
             if current_uuid:
                 if cuuid != current_uuid:
                     cuuid = current_uuid
-                    # socket tcp request
-                    #print(cuuid)
-                    ###
-                    with sqlite3.connect(os.path.join('src', 'data', 'tmp.db')) as conn:
-                        cur = conn.cursor()
-
-                        cur.execute("""UPDATE tmp SET UUID = ? WHERE id = 1;
-                                    """, (cuuid,))
-                        conn.commit()
-                        #conn.close()
-                        #print('DETECT')
+                    #print(current_uuid)
 
                     visit_dates = History.objects.all().filter(student_id=current_uuid).values_list('visit_date', flat=True)
 
@@ -200,11 +191,10 @@ def main():
         #cv2.imshow('streaming',frame)
         # Encode the frame in JPEG format with changing quality
         buffer = cv2.imencode(".jpg", frame, [int(cv2.IMWRITE_JPEG_QUALITY), VQ])[1] # lower quality
-        #buffer = cv2.imencode(".jpg", frame)[1] # default quality
-        x_as_bytes = pickle.dumps(buffer)
-        s_udp.sendto((x_as_bytes), (CLIENT_IP, CLIENT_PORT)) # need bytes size check or/& compress them how it can
+        sender.send_jpg(cuuid, buffer)
 
-    video.release()
+    video.stop()
+    sender.close()
 
 
 

@@ -51,33 +51,11 @@ ACT_EXIT = "EXIT"
 
 def startup_actions():
     try:
-        import sqlite3
-
-        conn = sqlite3.connect(os.path.join(os.getcwd(), 'src', 'data', 'tmp.db'))
-        cur = conn.cursor()
-
-
-        cur.execute("""
-                    CREATE TABLE IF NOT EXISTS "tmp" (
-                    "id"    INTEGER NOT NULL UNIQUE,
-                    "UUID"  INTEGER UNIQUE,
-                    PRIMARY KEY("id" AUTOINCREMENT)
-                    );
-                    """)
-
-        cur.execute("""DELETE FROM tmp;""")
-
         ldir = os.listdir(os.path.join("src", "images"))
         cuuid = None
         for p in ldir:
            if "___" in p and p.endswith(".jpg"):
               cuuid = p.split("___")[1].replace(".jpg", "")
-              print("Setted for startpage:", cuuid)
-              cur.execute("""INSERT INTO tmp VALUES(1, ?);
-                                              """, (cuuid,))
-
-              conn.commit()
-              conn.close()
               break
            else:
               print("Bad filename: ", p)

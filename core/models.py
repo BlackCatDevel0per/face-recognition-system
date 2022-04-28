@@ -75,9 +75,6 @@ class Settings(models.Model):
                 pass
         super(Settings, self).save(*args, **kwargs)
 
-    BUFFSIZE = models.PositiveIntegerField('BUFFSIZE', help_text='Buffer size for socket', default=1000000)
-    CIP = models.CharField('CIP', max_length=16, help_text='Client IP (Browser)', default='127.0.0.1')
-    CPORT = models.PositiveIntegerField('CPORT', help_text='Client PORT (Browser)', default=8080)
     SIP = models.CharField('SIP', max_length=16, help_text='Server IP (Face Recognition)', default='127.0.0.1')
     SPORT = models.PositiveIntegerField('SPORT', help_text='Server PORT (Face Recognition)', default=8080)
 

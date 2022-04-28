@@ -1,3 +1,6 @@
+import os
+import socket
+
 from django.shortcuts import render
 from django.http import StreamingHttpResponse, HttpResponse, JsonResponse
 
@@ -7,55 +10,59 @@ from core.models import Student
 
 import time
 
-#import cv2 
-import socket, pickle
-
-import os
-
-import sqlite3
+from .app_utils import VideoStreamSubscriber
 
 print("Loading settings..")
 from config import Config
-SERVER_IP = Config().get("CIP")
-SERVER_PORT = Config().get("CPORT")
-BUFFSIZE = Config().get("BUFFSIZE")
+SERVER_IP = Config().get("SIP")
+if SERVER_IP == "None" or SERVER_IP == None:
+    SERVER_IP = socket.gethostbyname(socket.gethostname())
+SERVER_PORT = Config().get("SPORT")
 
 global lock#
 lock = None
+global cuuid
+cuuid = None
+global current_uuid
+current_uuid = None
 
 def gen():
     global lock
     lock = False # stoping previous loop
-    s_udp = socket.socket(socket.AF_INET , socket.SOCK_DGRAM)
-    print("Socket server restarted!")
-    #print("Waiting for connections..")
-    while not lock:
-        try:
-            s_udp.bind((SERVER_IP, SERVER_PORT))
-            lock = True # starting new loop
-        except OSError:
-            print("connect retrying..")
-            time.sleep(0.1)
+    try:
+        receiver = VideoStreamSubscriber(SERVER_IP, SERVER_PORT)
+        print("ZMQ client connection: ", f"{SERVER_IP}:{SERVER_PORT}")
+        #print("Waiting for connections..")
+        # while not lock:
+        #     try:
+        #         # Check connection..
+        #         lock = True # starting new loop
+        #     except OSError:
+        #         print("connect retrying..")
+        #         time.sleep(0.1)
+        time.sleep(0.1)
+        lock = True
 
-    while lock:
-        bd=s_udp.recvfrom(BUFFSIZE)#
-        #CIP = bd[1][0]
-        data=bd[0]
-        #print(data)
-        jpeg=pickle.loads(data)
-        #print(type(data))
-        #frame = cv2.imdecode(data, cv2.IMREAD_COLOR)
-        #cv2.imshow('server', data) #to open image
-        # Encode the frame in JPEG format
-    
-        #jpeg = cv2.imencode('.jpg', frame)[1]
-        if not lock:
-            s_udp.close()
-            print("Socket restart..")
-            break
-            
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n\r\n')
+        while lock:
+            #print(type(data))
+            #frame = cv2.imdecode(data, cv2.IMREAD_COLOR)
+            #cv2.imshow('server', data) #to open image
+            # Encode the frame in JPEG format
+        
+            #jpeg = cv2.imencode('.jpg', frame)[1]
+            global cuuid
+            cuuid, jpeg = receiver.receive()
+            global current_uuid
+            current_uuid = cuuid
+            if not lock:
+                receiver.close()
+                print("ZMQ restart..")
+                break
+                
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + jpeg + b'\r\n\r\n')
+    except TimeoutError:
+        receiver.close()
 
 def index(request):
     return render(request, os.path.join('DjangoWebcamStreaming', 'index.html'))
@@ -67,18 +74,9 @@ def video_feed(request):
 
 def check(request):
     #######
-    
-    # Get user data by id from sqlite connection
-    conn = sqlite3.connect(os.path.join('src', 'data', 'tmp.db'))
-    cur = conn.cursor()
 
-    current_uuid = None
 
-    cur.execute("SELECT * FROM tmp LIMIT 1;")
-    current_uuid = cur.fetchone()
-    if current_uuid:
-        current_uuid = current_uuid[1]
-    conn.close()
+    current_uuid = cuuid
     #print(current_uuid)
     current_data = {}
 
