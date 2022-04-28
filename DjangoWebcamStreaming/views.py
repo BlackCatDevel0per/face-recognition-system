@@ -19,31 +19,17 @@ if SERVER_IP == "None" or SERVER_IP == None:
     SERVER_IP = socket.gethostbyname(socket.gethostname())
 SERVER_PORT = Config().get("SPORT")
 
-global lock#
-lock = None
 global cuuid
 cuuid = None
 global current_uuid
 current_uuid = None
 
 def gen():
-    global lock
-    lock = False # stoping previous loop
     try:
         receiver = VideoStreamSubscriber(SERVER_IP, SERVER_PORT)
         print("ZMQ client connection: ", f"{SERVER_IP}:{SERVER_PORT}")
-        #print("Waiting for connections..")
-        # while not lock:
-        #     try:
-        #         # Check connection..
-        #         lock = True # starting new loop
-        #     except OSError:
-        #         print("connect retrying..")
-        #         time.sleep(0.1)
-        time.sleep(0.1)
-        lock = True
 
-        while lock:
+        while True:
             #print(type(data))
             #frame = cv2.imdecode(data, cv2.IMREAD_COLOR)
             #cv2.imshow('server', data) #to open image
@@ -54,15 +40,16 @@ def gen():
             cuuid, jpeg = receiver.receive()
             global current_uuid
             current_uuid = cuuid
-            if not lock:
-                receiver.close()
-                print("ZMQ restart..")
-                break
                 
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + jpeg + b'\r\n\r\n')
     except TimeoutError:
         receiver.close()
+        print("ZMQ down!")
+
+    finally:
+        receiver.close()
+        print("ZMQ restart..")
 
 def index(request):
     return render(request, os.path.join('DjangoWebcamStreaming', 'index.html'))
