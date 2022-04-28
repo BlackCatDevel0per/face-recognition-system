@@ -27,7 +27,7 @@ current_uuid = None
 def gen():
     try:
         receiver = VideoStreamSubscriber(SERVER_IP, SERVER_PORT)
-        print("ZMQ client connection: ", f"{SERVER_IP}:{SERVER_PORT}")
+        print("ZMQ connected: ", f"{SERVER_IP}:{SERVER_PORT}")
 
         while True:
             #print(type(data))
@@ -45,11 +45,11 @@ def gen():
                    b'Content-Type: image/jpeg\r\n\r\n' + jpeg + b'\r\n\r\n')
     except TimeoutError:
         receiver.close()
-        print("ZMQ down!")
+        print(f"ZMQ connection: {SERVER_IP}:{SERVER_PORT} down!")
 
     finally:
         receiver.close()
-        print("ZMQ restart..")
+        print(f"ZMQ connection: {SERVER_IP}:{SERVER_PORT} restart..")
 
 def index(request):
     return render(request, os.path.join('DjangoWebcamStreaming', 'index.html'))
