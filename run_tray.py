@@ -101,10 +101,10 @@ def on_run(icon, item):
     if not pool:
         startup_actions()
         if os.name == 'nt':
-            cv_client = subprocess.Popen(["""WPy64-38100\python-3.8.10.amd64\python.exe""", "socket_cv2_client.py"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
+            cv_client = subprocess.Popen(["""WPy64-38100\python-3.8.10.amd64\python.exe""", "socket_cv2_server.py"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
             django_server = subprocess.Popen(["""WPy64-38100\python-3.8.10.amd64\python.exe""", "manage.py", "runserver"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
         elif os.name == 'posix':
-            cv_client = subprocess.Popen(["""venv/bin/python3""", "socket_cv2_client.py"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
+            cv_client = subprocess.Popen(["""venv/bin/python3""", "socket_cv2_server.py"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
             django_server = subprocess.Popen(["""venv/bin/python""", "manage.py", "runserver"], stdin=logfile, stdout=logfile, stderr=logfile, shell=True)
         print("Process started!")
         pool = True
