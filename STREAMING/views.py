@@ -6,7 +6,7 @@ from django.http import StreamingHttpResponse, HttpResponse, JsonResponse
 
 from django.views.decorators import gzip
 
-from core.models import Student
+from CORE.models import Student
 
 import time
 
@@ -52,7 +52,7 @@ def gen():
         print(f"ZMQ connection: {SERVER_IP}:{SERVER_PORT} restart..")
 
 def index(request):
-    return render(request, os.path.join('DjangoWebcamStreaming', 'index.html'))
+    return render(request, os.path.join('STREAMING', 'index.html'))
 
 @gzip.gzip_page
 def video_feed(request): 

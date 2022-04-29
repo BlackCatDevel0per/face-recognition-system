@@ -2,7 +2,7 @@ import os
 import uuid
 from django.db import models
 
-from DjangoWebcamStreaming.settings import BASE_DIR
+from STREAMING.settings import BASE_DIR
 
 toast_cam_script_path = 'UNKNOWN'
 if os.name == 'nt':

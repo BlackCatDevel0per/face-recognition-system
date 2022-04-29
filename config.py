@@ -1,6 +1,6 @@
 import os
 
-from core.models import Settings
+from CORE.models import Settings
 
 from django.db.utils import OperationalError
 

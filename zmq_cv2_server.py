@@ -18,12 +18,12 @@ import imagezmq
 import numpy as np
 
 import django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "DjangoWebcamStreaming.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "STREAMING.settings")
 django.setup()
 
 from config import Config
 
-from core.models import History
+from CORE.models import History
 
 
 def main():
@@ -188,7 +188,7 @@ def main():
                       )
 
         #3#
-        #cv2.imshow('streaming',frame)
+        #cv2.imshow('STREAMING',frame)
         # Encode the frame in JPEG format with changing quality
         buffer = cv2.imencode(".jpg", frame, [int(cv2.IMWRITE_JPEG_QUALITY), VQ])[1] # lower quality
         sender.send_jpg(cuuid, buffer)

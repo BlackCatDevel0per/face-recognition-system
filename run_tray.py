@@ -12,7 +12,7 @@ import pystray
 
 from PIL import Image, ImageDraw, UnidentifiedImageError
 
-# pyinstaller --icon=staticfiles\DjangoWebcamStreaming\images\favicon.ico --onefile --windowed exe.py
+# pyinstaller --icon=staticfiles\STREAMING\images\favicon.ico --onefile --windowed exe.py
 
 lockfile = os.path.join(tempfile.gettempdir(), 'FSR_TRAY.lock')
 logfile = open(os.path.join(tempfile.gettempdir(), 'FSR.log'), 'w')
@@ -42,7 +42,7 @@ def run_check():
         with open(lockfile, 'w') as lf:
             lf.write(str(os.getpid()))        
 
-ICON_PATH = os.path.join(os.getcwd(), "staticfiles", "DjangoWebcamStreaming", "images", "favicon.ico")
+ICON_PATH = os.path.join(os.getcwd(), "staticfiles", "STREAMING", "images", "favicon.ico")
 NAME = "FRS"
 ACT_RUN = "RUN"
 ACT_RESTART = "RESTART"
