@@ -12,10 +12,10 @@ import pystray
 
 from PIL import Image, ImageDraw, UnidentifiedImageError
 
-# pyinstaller --icon=staticfiles\STREAMING\images\favicon.ico --onefile --windowed exe.py
+# pyinstaller --icon=staticfiles\STREAMING\images\favicon.ico --onefile --windowed run_tray.py
 
-lockfile = os.path.join(tempfile.gettempdir(), 'FSR_TRAY.lock')
-logfile = open(os.path.join(tempfile.gettempdir(), 'FSR.log'), 'w')
+lockfile = os.path.join(tempfile.gettempdir(), 'FRS_TRAY.lock')
+logfile = open(os.path.join(tempfile.gettempdir(), 'FRS.log'), 'w')
 def run_check():
     txt = None
     if not os.path.exists(lockfile):
