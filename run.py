@@ -12,7 +12,7 @@ for p in ldir:
    else:
       print("Bad filename: ", p)
 
-cv_client = subprocess.Popen([sys.executable, "socket_cv2_server.py"])
+cv_client = subprocess.Popen([sys.executable, "zmq_cv2_server.py"])
 django_server = subprocess.Popen([sys.executable, "manage.py", "runserver"])
 
 try:
